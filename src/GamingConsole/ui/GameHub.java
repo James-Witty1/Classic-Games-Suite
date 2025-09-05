@@ -23,10 +23,6 @@ import GamingConsole.ttt.TTTView;
  * and graphical interface for the Game Hub. It extends JFrame and provides
  * a unified interface to play four different games: Snake, Connect 4, Tic‑Tac‑Toe, and Pong.
  *
- * Using a card layout, this class manages the navigation between the main menu
- * and individual game views. Each game is managed using a separate Model-View-Controller
- * (MVC) architecture to ensure separation of concerns and modularity.
- *
  * Features:
  * - Main menu interface for game selection.
  * - Integration of four different games with their corresponding controllers.

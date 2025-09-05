@@ -7,14 +7,10 @@ import javax.swing.*;
 /**
  * The SnakeView class represents the graphical view for the Snake game.
  * <p>
- * SnakeView is responsible for rendering the Snake game board, the GamingConsole.snake,
- * the food, and game-related metadata such as the current length of the GamingConsole.snake
+ * SnakeView is responsible for rendering the Snake game board, the GamingConsole.Snake,
+ * the food, and game-related metadata such as the current length of the GamingConsole.Snake
  * and the game status (e.g., "Game Over"). It makes use of the SnakeModel to
  * retrieve the current game state and updates the display accordingly.
- * <p>
- * The rendering uses anti-aliasing for smoother visuals. The grid and
- * game elements are drawn using the dimensions and positions stored
- * in the SnakeModel instance provided during construction.
  *
  */
 public class SnakeView extends JPanel {

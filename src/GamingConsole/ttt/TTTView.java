@@ -10,7 +10,6 @@ import javax.swing.*;
  * This class is a graphical representation of the Tic-Tac-Toe game board,
  * responsible for drawing the game grid, players' moves (X and O), and
  * overlaying status messages such as the current player's turn or game over indication.
- * It interacts with the {@code TTTModel} to obtain the state of the game.
  * <p>
  * Responsibilities:
  * - Renders the game grid with dividing lines.
