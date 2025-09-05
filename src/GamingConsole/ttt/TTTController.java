@@ -9,7 +9,7 @@ import java.util.Arrays;
 import javax.swing.*;
 
 /**
- * The TTTController class manages the control logic for a Tic-Tac-Toe game.
+ * The TTTController class manages the control logic for a Tic Tac Toe game.
  * <p>
  * Responsibilities:
  * - Handles user input, including mouse clicks to make moves and keyboard shortcuts for resetting
