@@ -19,36 +19,36 @@ import javax.swing.*;
  * - Ensures the game rules are followed, such as checking for win conditions or tied games.
  */
 public class TTTController implements MouseListener {
-  private final TTTModel m;
-  private final TTTView v;
+  private final TTTModel model;
+  private final TTTView view;
   private final Runnable onBack;
 
   /**
    * Constructs a TTTController instance to manage the control logic of the Tic-Tac-Toe game.
    *
-   * @param m the {@code TTTModel} instance representing the state of the Tic-Tac-Toe game.
-   * @param v the {@code TTTView} instance used for displaying the Tic-Tac-Toe game board.
+   * @param model the {@code TTTModel} instance representing the state of the Tic-Tac-Toe game.
+   * @param view the {@code TTTView} instance used for displaying the Tic-Tac-Toe game board.
    * @param onBack a {@code Runnable} callback to be executed when navigating back to the menu.
    */
-  public TTTController(TTTModel m, TTTView v, Runnable onBack) {
-    this.m = m;
-    this.v = v;
+  public TTTController(TTTModel model, TTTView view, Runnable onBack) {
+    this.model = model;
+    this.view = view;
     this.onBack = onBack;
-    v.addMouseListener(this);
+    view.addMouseListener(this);
     installKeyBindings();
     reset();
   }
 
   public void reset() {
-    for (int r = 0; r < m.size; r++) Arrays.fill(m.board[r], 0);
-    m.turn = 1;
-    m.over = false;
-    v.repaint();
+    for (int r = 0; r < model.size; r++) Arrays.fill(model.board[r], 0);
+    model.turn = 1;
+    model.over = false;
+    view.repaint();
   }
 
   private void installKeyBindings() {
-    InputMap im = v.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-    ActionMap am = v.getActionMap();
+    InputMap im = view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+    ActionMap am = view.getActionMap();
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0), "reset");
     am.put("reset", new AbstractAction() {
       public void actionPerformed(ActionEvent e) {
@@ -64,24 +64,24 @@ public class TTTController implements MouseListener {
   }
 
   private boolean win(int p) {
-    for (int i = 0; i < m.size; i++) {
-      if (m.board[i][0] == p && m.board[i][1] == p && m.board[i][2] == p) {
+    for (int i = 0; i < model.size; i++) {
+      if (model.board[i][0] == p && model.board[i][1] == p && model.board[i][2] == p) {
         return true;
       }
-      if (m.board[0][i] == p && m.board[1][i] == p && m.board[2][i] == p) {
+      if (model.board[0][i] == p && model.board[1][i] == p && model.board[2][i] == p) {
         return true;
       }
     }
-    if (m.board[0][0] == p && m.board[1][1] == p && m.board[2][2] == p) {
+    if (model.board[0][0] == p && model.board[1][1] == p && model.board[2][2] == p) {
       return true;
     }
-    return m.board[0][2] == p && m.board[1][1] == p && m.board[2][0] == p;
+    return model.board[0][2] == p && model.board[1][1] == p && model.board[2][0] == p;
   }
 
   private boolean full() {
-    for (int r = 0; r < m.size; r++) {
-      for (int c = 0; c < m.size; c++) {
-        if (m.board[r][c] == 0) {
+    for (int r = 0; r < model.size; r++) {
+      for (int c = 0; c < model.size; c++) {
+        if (model.board[r][c] == 0) {
           return false;
         }
       }
@@ -91,13 +91,19 @@ public class TTTController implements MouseListener {
 
   @Override
   public void mouseClicked(MouseEvent e) {
-    if (m.over) return;
-    int c = e.getX() / m.cell, r = e.getY() / m.cell;
-    if (r < m.size && c < m.size && m.board[r][c] == 0) {
-      m.board[r][c] = m.turn;
-      if (win(m.turn) || full()) m.over = true;
-      else m.turn = 3 - m.turn;
-      v.repaint();
+    if (model.over) {
+      return;
+    }
+    int c = e.getX() / model.cell, r = e.getY() / model.cell;
+    if (r < model.size && c < model.size && model.board[r][c] == 0) {
+      model.board[r][c] = model.turn;
+      if (win(model.turn) || full()) {
+        model.over = true;
+      }
+      else {
+        model.turn = 3 - model.turn;
+      }
+      view.repaint();
     }
   }
 

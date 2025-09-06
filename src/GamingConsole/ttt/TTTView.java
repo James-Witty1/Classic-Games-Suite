@@ -18,17 +18,17 @@ import javax.swing.*;
  * - Handles changes in the game state by redrawing the board when necessary.
  */
 public class TTTView extends JPanel {
-  private final TTTModel m;
+  private final TTTModel model;
 
   /**
    * Constructs a TTTView instance for the Tic-Tac-Toe game.
    *
-   * @param m the {@code TTTModel} instance representing the state and dimensions of the Tic-Tac-Toe
-   *          game.
+   * @param model the {@code TTTModel} instance representing the state and dimensions of the
+   *              Tic-Tac-Toe game.
    */
-  public TTTView(TTTModel m) {
-    this.m = m;
-    setPreferredSize(new Dimension(m.size * m.cell, m.size * m.cell + 40));
+  public TTTView(TTTModel model) {
+    this.model = model;
+    setPreferredSize(new Dimension(model.size * model.cell, model.size * model.cell + 40));
     setBackground(Color.WHITE);
   }
 
@@ -38,26 +38,26 @@ public class TTTView extends JPanel {
     Graphics2D g2 = (Graphics2D) g;
     g2.setStroke(new BasicStroke(4));
     g2.setColor(Color.BLACK);
-    for (int i = 1; i < m.size; i++) {
-      g2.drawLine(0, i * m.cell, m.size * m.cell, i * m.cell);
-      g2.drawLine(i * m.cell, 0, i * m.cell, m.size * m.cell);
+    for (int i = 1; i < model.size; i++) {
+      g2.drawLine(0, i * model.cell, model.size * model.cell, i * model.cell);
+      g2.drawLine(i * model.cell, 0, i * model.cell, model.size * model.cell);
     }
-    for (int r = 0; r < m.size; r++) {
-      for (int c = 0; c < m.size; c++) {
-        int x = c * m.cell, y = r * m.cell;
-        if (m.board[r][c] == 1) {
+    for (int r = 0; r < model.size; r++) {
+      for (int c = 0; c < model.size; c++) {
+        int x = c * model.cell, y = r * model.cell;
+        if (model.board[r][c] == 1) {
           g2.setColor(new Color(200, 40, 40));
-          g2.drawLine(x + 20, y + 20, x + m.cell - 20, y + m.cell - 20);
-          g2.drawLine(x + m.cell - 20, y + 20, x + 20, y + m.cell - 20);
-        } else if (m.board[r][c] == 2) {
+          g2.drawLine(x + 20, y + 20, x + model.cell - 20, y + model.cell - 20);
+          g2.drawLine(x + model.cell - 20, y + 20, x + 20, y + model.cell - 20);
+        } else if (model.board[r][c] == 2) {
           g2.setColor(new Color(40, 100, 220));
-          g2.drawOval(x + 20, y + 20, m.cell - 40, m.cell - 40);
+          g2.drawOval(x + 20, y + 20, model.cell - 40, model.cell - 40);
         }
       }
     }
     g2.setColor(Color.DARK_GRAY);
     g2.setFont(new Font("SansSerif", Font.BOLD, 18));
-    String msg = m.over ? "Game Over — R to reset" : (m.turn == 1 ? "X's turn" : "O's turn");
-    g2.drawString(msg + "   (ESC to Menu)", 10, m.size * m.cell + 28);
+    String msg = model.over ? "Game Over — R to reset" : (model.turn == 1 ? "X's turn" : "O's turn");
+    g2.drawString(msg + "   (ESC to Menu)", 10, model.size * model.cell + 28);
   }
 }

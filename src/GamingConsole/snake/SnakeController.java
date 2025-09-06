@@ -17,8 +17,8 @@ import javax.swing.*;
  * and GamingConsole.Snake growth.
  */
 public class SnakeController {
-  private final SnakeModel m;
-  private final SnakeView v;
+  private final SnakeModel model;
+  private final SnakeView view;
   private final Runnable onBack;
   private final Timer timer;
   private boolean turnedThisTick = false;
@@ -28,13 +28,13 @@ public class SnakeController {
    * including interaction between the model and view, game logic updates, and
    * user input bindings.
    *
-   * @param m      the SnakeModel instance representing the game's current state
-   * @param v      the SnakeView instance responsible for rendering the game to the user
+   * @param model      the SnakeModel instance representing the game's current state
+   * @param view      the SnakeView instance responsible for rendering the game to the user
    * @param onBack a Runnable that executes a callback action when the escape key is pressed
    */
-  public SnakeController(SnakeModel m, SnakeView v, Runnable onBack) {
-    this.m = m;
-    this.v = v;
+  public SnakeController(SnakeModel model, SnakeView view, Runnable onBack) {
+    this.model = model;
+    this.view = view;
     this.onBack = onBack;
     this.timer = new Timer(90, e -> tick());
     installKeyBindings();
@@ -59,14 +59,14 @@ public class SnakeController {
    * - The game state is updated in the model and view.
    */
   public void reset() {
-    m.snake.clear();
-    int cx = m.cols / 2, cy = m.rows / 2;
-    for (int i = 0; i < 5; i++) m.snake.addLast(new Point(cx - i, cy));
-    m.dx = 1;
-    m.dy = 0;
-    m.alive = true;
+    model.snake.clear();
+    int cx = model.cols / 2, cy = model.rows / 2;
+    for (int i = 0; i < 5; i++) model.snake.addLast(new Point(cx - i, cy));
+    model.dx = 1;
+    model.dy = 0;
+    model.alive = true;
     spawnFood();
-    v.repaint();
+    view.repaint();
   }
 
   /**
@@ -90,9 +90,9 @@ public class SnakeController {
   private void spawnFood() {
     Random r = new Random();
     do {
-      m.food = new Point(r.nextInt(m.cols), r.nextInt(m.rows));
+      model.food = new Point(r.nextInt(model.cols), r.nextInt(model.rows));
     }
-    while (m.snake.contains(m.food));
+    while (model.snake.contains(model.food));
   }
 
   /**
@@ -118,30 +118,30 @@ public class SnakeController {
    * - The view is repainted to reflect changes in the game state.
    */
   private void tick() {
-    if (!m.alive) {
-      v.repaint();
+    if (!model.alive) {
+      view.repaint();
       return;
     }
     turnedThisTick = false;
-    Point head = m.snake.peekFirst();
-    Point next = new Point(head.x + m.dx, head.y + m.dy);
-    if (next.x < 0) next.x = m.cols - 1;
-    if (next.x >= m.cols) next.x = 0;
-    if (next.y < 0) next.y = m.rows - 1;
-    if (next.y >= m.rows) next.y = 0;
+    Point head = model.snake.peekFirst();
+    Point next = new Point(head.x + model.dx, head.y + model.dy);
+    if (next.x < 0) next.x = model.cols - 1;
+    if (next.x >= model.cols) next.x = 0;
+    if (next.y < 0) next.y = model.rows - 1;
+    if (next.y >= model.rows) next.y = 0;
 
-    if (m.snake.contains(next)) {
-      m.alive = false;
-      v.repaint();
+    if (model.snake.contains(next)) {
+      model.alive = false;
+      view.repaint();
       return;
     }
-    m.snake.addFirst(next);
-    if (next.equals(m.food)) {
+    model.snake.addFirst(next);
+    if (next.equals(model.food)) {
       spawnFood();
     } else {
-      m.snake.removeLast();
+      model.snake.removeLast();
     }
-    v.repaint();
+    view.repaint();
   }
 
   /**
@@ -165,8 +165,8 @@ public class SnakeController {
    * - The game recognizes directional inputs and resets or exit triggers as appropriate.
    */
   private void installKeyBindings() {
-    InputMap im = v.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-    ActionMap am = v.getActionMap();
+    InputMap im = view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+    ActionMap am = view.getActionMap();
     Runnable esc = onBack;
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "menu");
     am.put("menu", new AbstractAction() {
@@ -209,12 +209,12 @@ public class SnakeController {
         if (turnedThisTick) {
           return;
         }
-        if (ddx == -m.dx && ddy == -m.dy) {
+        if (ddx == -model.dx && ddy == -model.dy) {
           return; // no instant reverse
         }
         if (ddx != 0 || ddy != 0) {
-          m.dx = ddx;
-          m.dy = ddy;
+          model.dx = ddx;
+          model.dy = ddy;
           turnedThisTick = true;
         }
       }

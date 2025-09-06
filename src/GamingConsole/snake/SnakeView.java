@@ -14,7 +14,7 @@ import javax.swing.*;
  *
  */
 public class SnakeView extends JPanel {
-  private final SnakeModel m;
+  private final SnakeModel model;
 
   /**
    * Constructs a SnakeView instance, responsible for rendering the graphical view
@@ -25,7 +25,7 @@ public class SnakeView extends JPanel {
    *          configuration, including the number of columns, rows, and cell size
    */
   public SnakeView(SnakeModel m) {
-    this.m = m;
+    this.model = m;
     setPreferredSize(new Dimension(m.cols * m.cell, m.rows * m.cell + 30));
     setBackground(new Color(20, 20, 20));
   }
@@ -37,28 +37,29 @@ public class SnakeView extends JPanel {
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
     g2.setColor(new Color(40, 40, 40));
-    for (int x = 0; x <= m.cols; x++) g2.drawLine(x * m.cell, 0, x * m.cell,
-            m.rows * m.cell);
-    for (int y = 0; y <= m.rows; y++) g2.drawLine(0, y * m.cell, m.cols * m.cell,
-            y * m.cell);
+    for (int x = 0; x <= model.cols; x++) g2.drawLine(x * model.cell, 0, x * model.cell,
+            model.rows * model.cell);
+    for (int y = 0; y <= model.rows; y++) g2.drawLine(0, y * model.cell, model.cols * model.cell,
+            y * model.cell);
 
     g2.setColor(new Color(255, 90, 90));
-    g2.fillOval(m.food.x * m.cell + 4, m.food.y * m.cell + 4, m.cell - 8,
-            m.cell - 8);
+    g2.fillOval(model.food.x * model.cell + 4, model.food.y * model.cell + 4, model.cell - 8,
+            model.cell - 8);
 
     int i = 0;
-    for (Point p : m.snake) {
-      float t = (float) i / Math.max(1, m.snake.size() - 1);
+    for (Point p : model.snake) {
+      float t = (float) i / Math.max(1, model.snake.size() - 1);
       Color c = new Color(80 + (int) (120 * (1 - t)), 200 - (int) (120 * t), 120);
       g2.setColor(c);
-      g2.fillRoundRect(p.x * m.cell + 2, p.y * m.cell + 2, m.cell - 4,
-              m.cell - 4, 10, 10);
+      g2.fillRoundRect(p.x * model.cell + 2, p.y * model.cell + 2, model.cell - 4,
+              model.cell - 4, 10, 10);
       i++;
     }
 
     g2.setColor(Color.WHITE);
     g2.setFont(new Font("Monospaced", Font.BOLD, 16));
-    g2.drawString("Length: " + m.snake.size()
-            + (m.alive ? "  (R to reset)" : "  — Game Over! Press R"), 10, m.rows * m.cell + 20);
+    g2.drawString("Length: " + model.snake.size()
+            + (model.alive ? "  (R to reset)" : "  — Game Over! Press R"),
+            10, model.rows * model.cell + 20);
   }
 }

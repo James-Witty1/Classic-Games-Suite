@@ -13,7 +13,9 @@ import java.util.Deque;
  * <p>
  */
 public class SnakeModel {
-  final int cols, rows, cell;
+  final int cols;
+  final int rows;
+  final int cell;
   Deque<Point> snake = new ArrayDeque<>();
   Point food = new Point(0, 0);
   int dx = 1, dy = 0;
