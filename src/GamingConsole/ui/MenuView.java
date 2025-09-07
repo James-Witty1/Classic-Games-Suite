@@ -77,7 +77,7 @@ class MenuView extends JPanel {
 
     GameCard snake = new GameCard("Snake", "Arcade classic", GameCard.IconType.SNAKE, onSnake);
     GameCard connect4 = new GameCard("Connect 4", "Drop & align", GameCard.IconType.CONNECT4, onC4);
-    GameCard ttt = new GameCard("Tic-Tac-Toe", "Best of 3?", GameCard.IconType.TTT, onTTT);
+    GameCard ttt = new GameCard("Tic-Tac-Toe", "Best of 3", GameCard.IconType.TTT, onTTT);
     GameCard pong = new GameCard("Pong", "Beat the AI", GameCard.IconType.PONG, onPong);
 
     c.gridx = 0;
