@@ -21,8 +21,8 @@ import javax.swing.*;
  * - Provide simple artificial intelligence for the right paddle to follow the ball.
  */
 public class PongController {
-  private final PongModel m;
-  private final PongView v;
+  private final PongModel model;
+  private final PongView view;
   private final Runnable onBack;
   private final Timer timer; // javax.swing.Timer explicitly imported
   private boolean up = false, down = false;
@@ -31,14 +31,14 @@ public class PongController {
    * Constructs a PongController which serves as the controller component of the Pong game
    * in a Model-View-Controller (MVC) architecture.
    *
-   * @param m      the PongModel instance representing the game state, including the ball, paddles,
+   * @param model  the PongModel instance representing the game state, including the ball, paddles,
    *               scores, and game dimensions
-   * @param v      the PongView instance responsible for rendering the visual elements of the game
+   * @param view   the PongView instance responsible for rendering the visual elements of the game
    * @param onBack a Runnable defining an action to return to the previous menu or screen
    */
-  public PongController(PongModel m, PongView v, Runnable onBack) {
-    this.m = m;
-    this.v = v;
+  public PongController(PongModel model, PongView view, Runnable onBack) {
+    this.model = model;
+    this.view = view;
     this.onBack = onBack;
     this.timer = new Timer(12, e -> tick());
     installKeyBindings();
@@ -47,18 +47,18 @@ public class PongController {
   }
 
   public void reset() {
-    m.ball.setBounds(m.W / 2 - 8, m.H / 2 - 8, 16, 16);
+    model.ball.setBounds(model.Width / 2 - 8, model.Height / 2 - 8, 16, 16);
     Random r = new Random();
-    m.vx = r.nextBoolean() ? 4 : -4;
-    m.vy = r.nextBoolean() ? 3 : -3;
-    m.paddleL.setBounds(30, m.H / 2 - 40, 12, 80);
-    m.paddleR.setBounds(m.W - 42, m.H / 2 - 50, 12, 100);
-    v.repaint();
+    model.vx = r.nextBoolean() ? 4 : -4;
+    model.vy = r.nextBoolean() ? 3 : -3;
+    model.paddleL.setBounds(30, model.Height / 2 - 40, 12, 80);
+    model.paddleR.setBounds(model.Width - 42, model.Height / 2 - 50, 12, 100);
+    view.repaint();
   }
 
   private void installKeyBindings() {
-    InputMap im = v.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-    ActionMap am = v.getActionMap();
+    InputMap im = view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+    ActionMap am = view.getActionMap();
     im.put(KeyStroke.getKeyStroke("pressed UP"), "upP");
     am.put("upP", new AbstractAction() {
       public void actionPerformed(ActionEvent e) {
@@ -86,7 +86,7 @@ public class PongController {
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0), "reset");
     am.put("reset", new AbstractAction() {
       public void actionPerformed(ActionEvent e) {
-        m.scoreL = m.scoreR = 0;
+        model.scoreL = model.scoreR = 0;
         reset();
       }
     });
@@ -99,44 +99,57 @@ public class PongController {
   }
 
   private void tick() {
-    if (up) m.paddleL.y = Math.max(10, m.paddleL.y - 6);
-    if (down) m.paddleL.y = Math.min(m.H - m.paddleL.height - 10, m.paddleL.y + 6);
-
-    int targetY = m.ball.y - m.paddleR.height / 2 + 8;
-    if (m.paddleR.y < targetY) m.paddleR.y += 4;
-    else m.paddleR.y -= 4;
-    m.paddleR.y = Math.max(10, Math.min(m.H - m.paddleR.height - 10, m.paddleR.y));
-
-    m.ball.x += m.vx;
-    m.ball.y += m.vy;
-
-    if (m.ball.y <= 10 || m.ball.y + m.ball.height >= m.H - 10) m.vy = -m.vy;
-
-    if (m.ball.intersects(m.paddleL)) {
-      m.ball.x = m.paddleL.x + m.paddleL.width;
-      m.vx = Math.abs(m.vx);
-      m.vy += (m.ball.y + m.ball.height / 2 - (m.paddleL.y + m.paddleL.height / 2)) / 8;
+    if (up) {
+      model.paddleL.y = Math.max(10, model.paddleL.y - 6);
     }
-    if (m.ball.intersects(m.paddleR)) {
-      m.ball.x = m.paddleR.x - m.ball.width;
-      m.vx = -Math.abs(m.vx);
-      m.vy += (m.ball.y + m.ball.height / 2 - (m.paddleR.y + m.paddleR.height / 2)) / 8;
+    if (down) {
+      model.paddleL.y = Math.min(model.Height - model.paddleL.height - 10, model.paddleL.y + 6);
+    }
+
+    int targetY = model.ball.y - model.paddleR.height / 2 + 8;
+    if (model.paddleR.y < targetY) {
+      model.paddleR.y += 4;
+    }
+    else {
+      model.paddleR.y -= 4;
+    }
+    model.paddleR.y = Math.max(
+            10, Math.min(model.Height - model.paddleR.height - 10, model.paddleR.y));
+
+    model.ball.x += model.vx;
+    model.ball.y += model.vy;
+
+    if (model.ball.y <= 10 || model.ball.y + model.ball.height >= model.Height - 10) {
+      model.vy = -model.vy;
+    }
+
+    if (model.ball.intersects(model.paddleL)) {
+      model.ball.x = model.paddleL.x + model.paddleL.width;
+      model.vx = Math.abs(model.vx);
+      model.vy += (model.ball.y + model.ball.height / 2 -
+              (model.paddleL.y + model.paddleL.height / 2)) / 8;
+    }
+    if (model.ball.intersects(model.paddleR)) {
+      model.ball.x = model.paddleR.x - model.ball.width;
+      model.vx = -Math.abs(model.vx);
+      model.vy += (model.ball.y + model.ball.height / 2 -
+              (model.paddleR.y + model.paddleR.height / 2)) / 8;
     }
 
     int leftLine = 10;
-    int rightLine = m.W - 10;
-    if (m.ball.x + m.ball.width < leftLine) { // AI scores
-      m.scoreR++;
+    int rightLine = model.Width - 10;
+    if (model.ball.x + model.ball.width < leftLine) { // AI scores
+      model.scoreR++;
       reset();
-      v.repaint();
+      view.repaint();
       return;
-    } else if (m.ball.x > rightLine) { // You score
-      m.scoreL++;
+    } else if (model.ball.x > rightLine) { // You score
+      model.scoreL++;
       reset();
-      v.repaint();
+      view.repaint();
       return;
     }
 
-    v.repaint();
+    view.repaint();
   }
 }

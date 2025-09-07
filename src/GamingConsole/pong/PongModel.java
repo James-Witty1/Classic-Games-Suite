@@ -10,21 +10,24 @@ import java.awt.*;
  * data to be rendered by the view and manipulated by the controller.
  */
 public class PongModel {
-  final int W, H;
+  final int Width;
+  final int Height;
   Rectangle ball = new Rectangle();
-  int vx = 4, vy = 3;
+  int vx = 4;
+  int vy = 3;
   Rectangle paddleL = new Rectangle();
   Rectangle paddleR = new Rectangle();
-  int scoreL = 0, scoreR = 0;
+  int scoreL = 0;
+  int scoreR = 0;
 
   /**
    * Constructs a PongModel to represent the game state with the specified dimensions.
    *
-   * @param W the width of the game arena in pixels
-   * @param H the height of the game arena in pixels
+   * @param Width the width of the game arena in pixels
+   * @param Height the height of the game arena in pixels
    */
-  public PongModel(int W, int H) {
-    this.W = W;
-    this.H = H;
+  public PongModel(int Width, int Height) {
+    this.Width = Width;
+    this.Height = Height;
   }
 }
