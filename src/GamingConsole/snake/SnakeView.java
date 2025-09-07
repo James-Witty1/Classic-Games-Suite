@@ -21,12 +21,12 @@ public class SnakeView extends JPanel {
    * of the Snake game. It initializes the view's preferred size and background
    * color based on the dimensions specified in the SnakeModel.
    *
-   * @param m the SnakeModel instance containing the game's state and board
+   * @param model the SnakeModel instance containing the game's state and board
    *          configuration, including the number of columns, rows, and cell size
    */
-  public SnakeView(SnakeModel m) {
-    this.model = m;
-    setPreferredSize(new Dimension(m.cols * m.cell, m.rows * m.cell + 30));
+  public SnakeView(SnakeModel model) {
+    this.model = model;
+    setPreferredSize(new Dimension(model.cols * model.cell, model.rows * model.cell + 30));
     setBackground(new Color(20, 20, 20));
   }
 
@@ -49,7 +49,7 @@ public class SnakeView extends JPanel {
     int i = 0;
     for (Point p : model.snake) {
       float t = (float) i / Math.max(1, model.snake.size() - 1);
-      Color c = new Color(80 + (int) (120 * (1 - t)), 200 - (int) (120 * t), 120);
+      Color c = new Color(0,255,156);
       g2.setColor(c);
       g2.fillRoundRect(p.x * model.cell + 2, p.y * model.cell + 2, model.cell - 4,
               model.cell - 4, 10, 10);
