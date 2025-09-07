@@ -11,7 +11,9 @@ package GamingConsole.connect4;
  * - Indicates if the game has ended.
  */
 public class Connect4Model {
-  final int cols, rows, cell;
+  final int cols;
+  final int rows;
+  final int cell;
   final int[][] board;
   int current = 1;
   boolean gameOver = false;

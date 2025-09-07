@@ -21,23 +21,23 @@ import javax.swing.*;
  * returning to the menu.
  */
 public class Connect4Controller implements MouseListener {
-  private final Connect4Model m;
-  private final Connect4View v;
+  private final Connect4Model model;
+  private final Connect4View view;
   private final Runnable onBack;
 
   /**
    * Constructs a Connect4Controller instance to manage the Connect 4 game logic,
    * integrating the model, view, and user input.
    *
-   * @param m      the Connect4Model representing the game's state and logic
-   * @param v      the Connect4View responsible for displaying the game board and visuals
+   * @param model  the Connect4Model representing the game's state and logic
+   * @param view   the Connect4View responsible for displaying the game board and visuals
    * @param onBack a Runnable action to be executed when exiting the game
    */
-  public Connect4Controller(Connect4Model m, Connect4View v, Runnable onBack) {
-    this.m = m;
-    this.v = v;
+  public Connect4Controller(Connect4Model model, Connect4View view, Runnable onBack) {
+    this.model = model;
+    this.view = view;
     this.onBack = onBack;
-    v.addMouseListener(this);
+    view.addMouseListener(this);
     installKeyBindings();
     reset();
   }
@@ -46,18 +46,18 @@ public class Connect4Controller implements MouseListener {
    * Resets the Connect 4 game state to its initial conditions.
    */
   public void reset() {
-    for (int r = 0; r < m.rows; r++) Arrays.fill(m.board[r], 0);
-    m.current = 1;
-    m.gameOver = false;
-    v.repaint();
+    for (int r = 0; r < model.rows; r++) Arrays.fill(model.board[r], 0);
+    model.current = 1;
+    model.gameOver = false;
+    view.repaint();
   }
 
   /**
    * Configures key bindings for the Connect4View to handle specific user keyboard actions.
    */
   private void installKeyBindings() {
-    InputMap im = v.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-    ActionMap am = v.getActionMap();
+    InputMap im = view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+    ActionMap am = view.getActionMap();
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0), "reset");
     am.put("reset", new AbstractAction() {
       public void actionPerformed(ActionEvent e) {
@@ -81,10 +81,10 @@ public class Connect4Controller implements MouseListener {
    * @return the row index where the piece was placed, or -1 if the column is invalid or full
    */
   private int dropIn(int col) {
-    if (col < 0 || col >= m.cols) return -1;
-    for (int r = m.rows - 1; r >= 0; r--) {
-      if (m.board[r][col] == 0) {
-        m.board[r][col] = m.current;
+    if (col < 0 || col >= model.cols) return -1;
+    for (int r = model.rows - 1; r >= 0; r--) {
+      if (model.board[r][col] == 0) {
+        model.board[r][col] = model.current;
         return r;
       }
     }
@@ -101,7 +101,7 @@ public class Connect4Controller implements MouseListener {
    * @return true if the move results in a winning condition, false otherwise
    */
   private boolean checkWin(int r, int c) {
-    int p = m.board[r][c];
+    int p = model.board[r][c];
     if (p == 0) return false;
     int[][] dir = {{1, 0}, {0, 1}, {1, 1}, {1, -1}};
     for (int[] d : dir) {
@@ -128,7 +128,7 @@ public class Connect4Controller implements MouseListener {
     int n = 0;
     r += dr;
     c += dc;
-    while (r >= 0 && r < m.rows && c >= 0 && c < m.cols && m.board[r][c] == p) {
+    while (r >= 0 && r < model.rows && c >= 0 && c < model.cols && model.board[r][c] == p) {
       n++;
       r += dr;
       c += dc;
@@ -142,19 +142,29 @@ public class Connect4Controller implements MouseListener {
    * @return true if the top row of the game board is completely filled, false otherwise
    */
   private boolean fullTop() {
-    for (int c = 0; c < m.cols; c++) if (m.board[0][c] == 0) return false;
+    for (int c = 0; c < model.cols; c++) {
+      if (model.board[0][c] == 0) {
+        return false;
+      }
+    }
     return true;
   }
 
   @Override
   public void mouseClicked(MouseEvent e) {
-    if (m.gameOver) return;
-    int col = (e.getX() - 20) / m.cell;
+    if (model.gameOver) {
+      return;
+    }
+    int col = (e.getX() - 20) / model.cell;
     int row = dropIn(col);
     if (row != -1) {
-      if (checkWin(row, col) || fullTop()) m.gameOver = true;
-      else m.current = 3 - m.current;
-      v.repaint();
+      if (checkWin(row, col) || fullTop()) {
+        model.gameOver = true;
+      }
+      else {
+        model.current = 3 - model.current;
+      }
+      view.repaint();
     }
   }
 

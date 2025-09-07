@@ -16,18 +16,18 @@ import javax.swing.*;
  * a HUD.
  */
 public class Connect4View extends JPanel {
-  private final Connect4Model m;
-  private final int margin = 20; // outer padding
+  private final Connect4Model model;
+  private final int margin = 20;
 
   /**
    * Constructs a Connect4View instance configured to display the Connect 4 game board.
    *
-   * @param m the Connect4Model containing the game board configuration and state
+   * @param model the Connect4Model containing the game board configuration and state
    */
-  public Connect4View(Connect4Model m) {
-    this.m = m;
+  public Connect4View(Connect4Model model) {
+    this.model = model;
     setPreferredSize(new Dimension(
-            m.cols * m.cell + margin * 2, m.rows * m.cell + margin * 2 + 60));
+            model.cols * model.cell + margin * 2, model.rows * model.cell + margin * 2 + 60));
     setBackground(new Color(10, 60, 120));
   }
 
@@ -39,22 +39,22 @@ public class Connect4View extends JPanel {
 
     int boardX = margin;
     int boardY = margin;
-    int boardW = m.cols * m.cell;
-    int boardH = m.rows * m.cell;
+    int boardW = model.cols * model.cell;
+    int boardH = model.rows * model.cell;
 
     g2.setColor(new Color(20, 90, 170));
     g2.fillRoundRect(boardX, boardY, boardW, boardH, 25, 25);
 
-    int hole = m.cell - 20;
-    int offset = (m.cell - hole) / 2;
+    int hole = model.cell - 20;
+    int offset = (model.cell - hole) / 2;
 
-    for (int r = 0; r < m.rows; r++) {
-      for (int c = 0; c < m.cols; c++) {
-        int x = boardX + c * m.cell + offset;
-        int y = boardY + r * m.cell + offset;
+    for (int r = 0; r < model.rows; r++) {
+      for (int c = 0; c < model.cols; c++) {
+        int x = boardX + c * model.cell + offset;
+        int y = boardY + r * model.cell + offset;
         g2.setColor(Color.WHITE);
         g2.fillOval(x, y, hole, hole);
-        int v = m.board[r][c];
+        int v = model.board[r][c];
         if (v != 0) {
           g2.setColor(v == 1 ? new Color(220, 60, 60) : new Color(240, 210, 60));
           g2.fillOval(x + 3, y + 3, hole - 6, hole - 6);
@@ -64,8 +64,8 @@ public class Connect4View extends JPanel {
 
     g2.setColor(Color.BLACK);
     g2.setFont(new Font("SansSerif", Font.BOLD, 18));
-    String status = m.gameOver ? "Game Over — Press R" :
-            (m.current == 1 ? "Red's turn" : "Yellow's turn");
+    String status = model.gameOver ? "Game Over — Press R" :
+            (model.current == 1 ? "Red's turn" : "Yellow's turn");
     g2.drawString(status + "   (ESC to Menu)", margin, boardY + boardH + 40);
   }
 }
