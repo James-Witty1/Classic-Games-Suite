@@ -12,7 +12,10 @@ import javax.swing.*;
  * The UI incorporates custom rendering for a visually appealing layout.
  */
 class MenuView extends JPanel {
-  private final Runnable onSnake, onC4, onTTT, onPong;
+  private final Runnable onSnake;
+  private final Runnable onC4;
+  private final Runnable onTTT;
+  private final Runnable onPong;
 
   /**
    * Constructs the GamingConsole.ui.MenuView panel that serves as the main menu for the game hub,
