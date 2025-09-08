@@ -129,7 +129,7 @@ public class SnakeModelTests {
   }
 
   @Test
-  public void testWallCollisionEndsGame() {
+  public void testWallCollisionEndsGame() { //WALL COLLISION OF THE SNAKE OR ACTUAL WALL? ACTUAL WALL IS PLAYABLE.
     snake.setDirection(FakeSnakeModel.Direction.UP);
     snake.tick();
 

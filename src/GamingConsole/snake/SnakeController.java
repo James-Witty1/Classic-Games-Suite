@@ -28,9 +28,9 @@ public class SnakeController {
    * including interaction between the model and view, game logic updates, and
    * user input bindings.
    *
-   * @param model      the SnakeModel instance representing the game's current state
+   * @param model     the SnakeModel instance representing the game's current state
    * @param view      the SnakeView instance responsible for rendering the game to the user
-   * @param onBack a Runnable that executes a callback action when the escape key is pressed
+   * @param onBack    a Runnable that executes a callback action when the escape key is pressed
    */
   public SnakeController(SnakeModel model, SnakeView view, Runnable onBack) {
     this.model = model;
@@ -50,18 +50,13 @@ public class SnakeController {
    * direction of movement, ensures the GamingConsole.Snake is marked as alive, spawns new food
    * at a valid random position, and triggers the view to repaint the board
    * reflecting these updates.
-   * <p>
-   * Postconditions:
-   * - The GamingConsole.snake is repositioned and recreated at the center of the grid, moving
-   * initially to the right.
-   * - The GamingConsole.snake's direction is reset to default (rightward).
-   * - The food is placed at a random valid position not occupied by the GamingConsole.snake.
-   * - The game state is updated in the model and view.
    */
   public void reset() {
     model.snake.clear();
     int cx = model.cols / 2, cy = model.rows / 2;
-    for (int i = 0; i < 5; i++) model.snake.addLast(new Point(cx - i, cy));
+    for (int i = 0; i < 5; i++) {
+      model.snake.addLast(new Point(cx - i, cy));
+    }
     model.dx = 1;
     model.dy = 0;
     model.alive = true;
@@ -77,15 +72,6 @@ public class SnakeController {
    * (determined by the number of columns and rows in the SnakeModel instance).
    * If the generated position is already occupied by the GamingConsole.snake, the process is
    * repeated until a valid position is found. The food position is then updated
-   * in the model.
-   * <p>
-   * Preconditions:
-   * - The game model must be initialized, including the grid dimensions and
-   * the GamingConsole.snake's current state.
-   * <p>
-   * Postconditions:
-   * - The position of the food in the model will be updated to a random grid
-   * location that does not overlap with the GamingConsole.snake's body.
    */
   private void spawnFood() {
     Random r = new Random();
@@ -104,18 +90,6 @@ public class SnakeController {
    * position, handling collisions (with itself or boundaries via wrapping), and
    * checking for food consumption. After processing these events, it triggers the
    * view to repaint the board to reflect the updated state.
-   * <p>
-   * Preconditions:
-   * - The SnakeModel and SnakeView instances must be properly initialized.
-   * - `m` holds the current state of the game, including the GamingConsole.snake's position,
-   * direction, game boundaries, and whether the game is still active.
-   * <p>
-   * Postconditions:
-   * - The GamingConsole.Snake's position is updated (and wrapped if necessary).
-   * - If the GamingConsole.Snake consumes the food, its length is increased and new food is placed
-   * at a random valid position.
-   * - The game ends if the GamingConsole.Snake collides with itself.
-   * - The view is repainted to reflect changes in the game state.
    */
   private void tick() {
     if (!model.alive) {
@@ -125,10 +99,21 @@ public class SnakeController {
     turnedThisTick = false;
     Point head = model.snake.peekFirst();
     Point next = new Point(head.x + model.dx, head.y + model.dy);
-    if (next.x < 0) next.x = model.cols - 1;
-    if (next.x >= model.cols) next.x = 0;
-    if (next.y < 0) next.y = model.rows - 1;
-    if (next.y >= model.rows) next.y = 0;
+    if (next.x < 0) {
+      next.x = model.cols - 1;
+    }
+
+    if (next.x >= model.cols) {
+      next.x = 0;
+    }
+
+    if (next.y < 0) {
+      next.y = model.rows - 1;
+    }
+
+    if (next.y >= model.rows) {
+      next.y = 0;
+    }
 
     if (model.snake.contains(next)) {
       model.alive = false;
@@ -136,6 +121,7 @@ public class SnakeController {
       return;
     }
     model.snake.addFirst(next);
+
     if (next.equals(model.food)) {
       spawnFood();
     } else {
@@ -154,15 +140,6 @@ public class SnakeController {
    * - Configures directional movement controls for the GamingConsole.Snake, responding to both
    * arrow keys and WASD keys. These bindings update the GamingConsole.Snake's movement
    * direction based on key inputs.
-   * <p>
-   * Preconditions:
-   * - The `SnakeController` instance must be initialized with a `SnakeView` (`v`) and
-   * a valid `Runnable` (`onBack`).
-   * - The `bindDir` method is utilized to handle directional input bindings.
-   * <p>
-   * Postconditions:
-   * - Key inputs are bound to respective game actions, enabling users to control gameplay.
-   * - The game recognizes directional inputs and resets or exit triggers as appropriate.
    */
   private void installKeyBindings() {
     InputMap im = view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
