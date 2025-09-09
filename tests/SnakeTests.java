@@ -10,7 +10,7 @@ import java.awt.Point;
  * initial game state, movement behavior, food consumption,
  * wall collisions, and direction change restrictions.
  */
-public class SnakeModelTests {
+public class SnakeTests {
 
   static class FakeSnakeModel {
     enum Direction {UP, DOWN, LEFT, RIGHT}
@@ -44,14 +44,6 @@ public class SnakeModelTests {
      */
     public int getLength() {
       return length;
-    }
-
-    /**
-     * gets the head of the snake as a Point object
-     * @return the head of the snake as a Point object
-     */
-    public Point getHead() {
-      return new Point(head);
     }
 
     /**
@@ -126,22 +118,6 @@ public class SnakeModelTests {
     snake.tick();
     snake.tick();
     assertEquals(before + 1, snake.getLength());
-  }
-
-  @Test
-  public void testWallCollisionEndsGame() { //WALL COLLISION OF THE SNAKE OR ACTUAL WALL? ACTUAL WALL IS PLAYABLE.
-    snake.setDirection(FakeSnakeModel.Direction.UP);
-    snake.tick();
-
-    snake.setDirection(FakeSnakeModel.Direction.LEFT);
-
-    for (int i = 0; i < 12; i++) {
-      if (snake.isGameOver()) {
-        break;
-      }
-      snake.tick();
-    }
-    assertTrue(snake.isGameOver());
   }
 
   @Test(expected = IllegalArgumentException.class)
