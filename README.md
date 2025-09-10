@@ -1,5 +1,5 @@
-# Java Swing Game Hub
-A Java Swing game hub that contains four high quality, playable games:
+# Classic Game Suite
+This is a Classic Game Suite made using Java Swing that contains four high quality, playable games:
 
 - Snake  
 - Connect 4  
