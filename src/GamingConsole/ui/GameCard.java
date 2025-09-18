@@ -100,8 +100,8 @@ class GameCard extends JButton {
           g2.fillRoundRect(cx + i * seg, cy + (int) (6 * Math.sin(i * 0.7)), 12, 12, 6, 6);
         }
         g2.setColor(new Color(30, 30, 30));
-        g2.fillOval(x + w - 24, y + 10, 6, 6);
-        g2.fillOval(x + w - 12, y + 18, 6, 6);
+        g2.fillOval(x + w - 92, y + 53, 6, 8);
+        g2.fillOval(x + w - 92, y + 45, 6, 8);
         break;
       case CONNECT4:
         g2.setColor(new Color(230, 230, 240));

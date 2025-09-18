@@ -41,7 +41,7 @@ class MenuView extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
                 RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        String title = "Game Hub";
+        String title = "Games Suite";
         Font f = getFont().deriveFont(Font.BOLD, 44f);
         g2.setFont(f);
         g2.setColor(new Color(0, 0, 0, 60));
