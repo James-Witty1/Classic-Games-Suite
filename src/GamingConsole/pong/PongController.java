@@ -25,7 +25,8 @@ public class PongController {
   private final PongView view;
   private final Runnable onBack;
   private final Timer timer; // javax.swing.Timer explicitly imported
-  private boolean up = false, down = false;
+  private boolean up = false;
+  private boolean down = false;
 
   /**
    * Constructs a PongController which serves as the controller component of the Pong game
