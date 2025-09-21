@@ -6,7 +6,6 @@ This is a Classic Games Suite made using Java Swing that contains four high qual
 - Tic-Tac-Toe  
 - Pong  
 
-All games are contained in **GameHub.java**, organized with a Model-View-Controller (MVC) structure.  
 The hub uses a `CardLayout` to switch between the main menu and each game.
 
 ---
